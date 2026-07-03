@@ -154,7 +154,7 @@ export default function AuditPage() {
       if (filters.action) params.action = filters.action
       if (filters.date_from) params.date_from = filters.date_from
       if (filters.date_to) params.date_to = filters.date_to
-      return api.get('/audit', { params }).then(r => r.data)
+      return api.get('/api/audit', { params }).then(r => r.data)
     },
   })
 

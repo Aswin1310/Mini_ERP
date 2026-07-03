@@ -9,9 +9,9 @@ import { useAuth } from '../../context/AuthContext'
 function WorkCenterPanel({ canEdit }) {
   const qc = useQueryClient()
   const [name, setName] = useState('')
-  const { data: workCenters } = useQuery({ queryKey: ['work-centers'], queryFn: () => api.get('/manufacturing/work-centers').then(r => r.data) })
+  const { data: workCenters } = useQuery({ queryKey: ['work-centers'], queryFn: () => api.get('/api/manufacturing/work-centers').then(r => r.data) })
   const createMut = useMutation({
-    mutationFn: d => api.post('/manufacturing/work-centers', d),
+    mutationFn: d => api.post('/api/manufacturing/work-centers', d),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['work-centers'] }); setName(''); toast.success('Work center created') },
     onError: e => toast.error(e.response?.data?.detail || 'Failed to create work center'),
   })
@@ -45,8 +45,8 @@ function WorkCenterPanel({ canEdit }) {
 
 function BOMForm({ onClose }) {
   const qc = useQueryClient()
-  const { data: products } = useQuery({ queryKey: ['products'], queryFn: () => api.get('/products').then(r => r.data) })
-  const { data: workCenters } = useQuery({ queryKey: ['work-centers'], queryFn: () => api.get('/manufacturing/work-centers').then(r => r.data) })
+  const { data: products } = useQuery({ queryKey: ['products'], queryFn: () => api.get('/api/products').then(r => r.data) })
+  const { data: workCenters } = useQuery({ queryKey: ['work-centers'], queryFn: () => api.get('/api/manufacturing/work-centers').then(r => r.data) })
   const [form, setForm] = useState({ product_id: '', name: '', version: '1.0' })
   const [lines, setLines] = useState([{ component_id: '', qty: 1 }])
   const [ops, setOps] = useState([{ operation_name: '', work_center_id: '', duration_minutes: 30, sequence: 10 }])
@@ -60,7 +60,7 @@ function BOMForm({ onClose }) {
   const removeOp = (i) => setOps(o => o.filter((_, idx) => idx !== i))
 
   const mut = useMutation({
-    mutationFn: d => api.post('/manufacturing/boms', d),
+    mutationFn: d => api.post('/api/manufacturing/boms', d),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['boms'] }); onClose(); toast.success('Bill of Materials created') },
     onError: e => toast.error(e.response?.data?.detail || 'Failed to create BoM'),
   })
@@ -223,7 +223,7 @@ export default function BOMPage() {
   const canEdit = ['admin', 'owner', 'manufacturing'].includes(user?.role)
   const { data: boms, isLoading } = useQuery({
     queryKey: ['boms'],
-    queryFn: () => api.get('/manufacturing/boms').then(r => r.data)
+    queryFn: () => api.get('/api/manufacturing/boms').then(r => r.data)
   })
 
   return (

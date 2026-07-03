@@ -20,8 +20,8 @@ const statusBadge = (s) => ({
 
 function NewSOForm({ onClose }) {
   const qc = useQueryClient()
-  const { data: customers } = useQuery({ queryKey: ['customers'], queryFn: () => api.get('/customers').then(r => r.data) })
-  const { data: products } = useQuery({ queryKey: ['products'], queryFn: () => api.get('/products').then(r => r.data) })
+  const { data: customers } = useQuery({ queryKey: ['customers'], queryFn: () => api.get('/api/customers').then(r => r.data) })
+  const { data: products } = useQuery({ queryKey: ['products'], queryFn: () => api.get('/api/products').then(r => r.data) })
   const [form, setForm] = useState({ customer_id: '', order_date: new Date().toISOString().split('T')[0], notes: '' })
   const [lines, setLines] = useState([{ product_id: '', qty_ordered: 1, unit_price: '' }])
 
@@ -36,7 +36,7 @@ function NewSOForm({ onClose }) {
   }
 
   const mut = useMutation({
-    mutationFn: (data) => api.post('/sales', data),
+    mutationFn: (data) => api.post('/api/sales', data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['sales'] }); onClose(); toast.success('Sales order created successfully') },
     onError: e => toast.error(e.response?.data?.detail || 'Failed to create sales order'),
   })
@@ -211,18 +211,18 @@ export default function SalesPage() {
       if (filters.status) params.status = filters.status
       if (filters.date_from) params.date_from = filters.date_from
       if (filters.date_to) params.date_to = filters.date_to
-      return api.get('/sales', { params }).then(r => r.data)
+      return api.get('/api/sales', { params }).then(r => r.data)
     },
   })
 
   const confirmMut = useMutation({
-    mutationFn: id => api.post(`/sales/${id}/confirm`),
+    mutationFn: id => api.post(`/api/sales/${id}/confirm`),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['sales'] }); setConfirmingOrder(null); toast.success('Sales order confirmed') },
     onError: e => toast.error(e.response?.data?.detail || 'Failed to confirm order')
   })
 
   const cancelMut = useMutation({
-    mutationFn: id => api.post(`/sales/${id}/cancel`),
+    mutationFn: id => api.post(`/api/sales/${id}/cancel`),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['sales'] }); toast.success('Sales order cancelled') },
     onError: e => toast.error(e.response?.data?.detail || 'Failed to cancel order')
   })

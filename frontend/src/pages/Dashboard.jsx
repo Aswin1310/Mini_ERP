@@ -199,7 +199,7 @@ export default function Dashboard() {
   const { user } = useAuth()
   const { data, isLoading } = useQuery({
     queryKey: ['dashboard'],
-    queryFn: () => api.get('/dashboard').then(r => r.data),
+    queryFn: () => api.get('/api/dashboard').then(r => r.data),
   })
 
   const now = new Date()

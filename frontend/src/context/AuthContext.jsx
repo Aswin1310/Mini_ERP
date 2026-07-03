@@ -9,7 +9,7 @@ export function AuthProvider({ children }) {
   })
 
   const login = async (email, password) => {
-    const { data } = await api.post('/auth/login', { email, password })
+    const { data } = await api.post('/api/auth/login', { email, password })
     localStorage.setItem('token', data.access_token)
     localStorage.setItem('user', JSON.stringify(data.user))
     setUser(data.user)
@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
   }
 
   const refreshUser = async () => {
-    const { data } = await api.get('/auth/me')
+    const { data } = await api.get('/api/auth/me')
     localStorage.setItem('user', JSON.stringify(data))
     setUser(data)
     return data

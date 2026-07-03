@@ -133,7 +133,7 @@ export default function ProfilePage() {
 
   const { data: profile, isLoading } = useQuery({
     queryKey: ['profile'],
-    queryFn: () => api.get('/auth/me').then(r => r.data),
+    queryFn: () => api.get('/api/auth/me').then(r => r.data),
   })
 
   useEffect(() => {
@@ -141,7 +141,7 @@ export default function ProfilePage() {
   }, [profile])
 
   const updateMut = useMutation({
-    mutationFn: d => api.patch('/auth/me', d),
+    mutationFn: d => api.patch('/api/auth/me', d),
     onSuccess: async () => {
       await refreshUser()
       qc.invalidateQueries({ queryKey: ['profile'] })
@@ -152,7 +152,7 @@ export default function ProfilePage() {
   })
 
   const pwdMut = useMutation({
-    mutationFn: d => api.post('/auth/change-password', d),
+    mutationFn: d => api.post('/api/auth/change-password', d),
     onSuccess: () => {
       setPwdForm({ current_password: '', new_password: '', confirm: '' })
       setShowPwdSection(false)

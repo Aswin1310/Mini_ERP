@@ -94,19 +94,19 @@ export default function VendorsPage() {
 
   const { data: vendors, isLoading } = useQuery({
     queryKey: ['vendors', search, page],
-    queryFn: () => api.get('/vendors', {
+    queryFn: () => api.get('/api/vendors', {
       params: { skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE, ...(search ? { search } : {}) }
     }).then(r => r.data),
   })
 
   const createMut = useMutation({ 
-    mutationFn: d => api.post('/vendors', d), 
+    mutationFn: d => api.post('/api/vendors', d), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['vendors'] }); setShowForm(false); toast.success('Vendor registered successfully') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to register vendor') 
   })
 
   const updateMut = useMutation({ 
-    mutationFn: ({ id, data }) => api.put(`/vendors/${id}`, data), 
+    mutationFn: ({ id, data }) => api.put(`/api/vendors/${id}`, data), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['vendors'] }); setEditing(null); toast.success('Vendor profile updated') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to update vendor') 
   })

@@ -94,19 +94,19 @@ export default function CustomersPage() {
 
   const { data: customers, isLoading } = useQuery({
     queryKey: ['customers', search, page],
-    queryFn: () => api.get('/customers', {
+    queryFn: () => api.get('/api/customers', {
       params: { skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE, ...(search ? { search } : {}) }
     }).then(r => r.data),
   })
 
   const createMut = useMutation({ 
-    mutationFn: d => api.post('/customers', d), 
+    mutationFn: d => api.post('/api/customers', d), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['customers'] }); setShowForm(false); toast.success('Customer registered successfully') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to register customer') 
   })
 
   const updateMut = useMutation({ 
-    mutationFn: ({ id, data }) => api.put(`/customers/${id}`, data), 
+    mutationFn: ({ id, data }) => api.put(`/api/customers/${id}`, data), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['customers'] }); setEditing(null); toast.success('Customer profile updated') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to update customer') 
   })

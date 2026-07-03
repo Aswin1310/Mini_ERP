@@ -22,11 +22,11 @@ export default function UsersPage() {
 
   const { data: users, isLoading } = useQuery({
     queryKey: ['users'],
-    queryFn: () => api.get('/auth/users').then(r => r.data),
+    queryFn: () => api.get('/api/auth/users').then(r => r.data),
   })
 
   const updateMut = useMutation({
-    mutationFn: ({ id, payload }) => api.patch(`/auth/users/${id}`, payload),
+    mutationFn: ({ id, payload }) => api.patch(`/api/auth/users/${id}`, payload),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['users'] })
       setEditingId(null)

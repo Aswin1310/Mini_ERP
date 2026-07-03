@@ -45,7 +45,7 @@ export default function SignupPage() {
     if (form.password.length < 6) { toast.error('Password must be at least 6 characters'); return }
     setLoading(true)
     try {
-      await api.post('/auth/register', {
+      await api.post('/api/auth/register', {
         full_name: form.full_name, email: form.email, password: form.password, role: form.role,
         ...(form.role === 'admin' && { admin_secret: form.admin_secret }),
       })
