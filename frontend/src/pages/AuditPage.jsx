@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import api from '../client'
+import api from '../api/client'
 import { useAuth } from '../context/AuthContext'
 import { Navigate } from 'react-router-dom'
 import { ClipboardList, Search, X } from 'lucide-react'

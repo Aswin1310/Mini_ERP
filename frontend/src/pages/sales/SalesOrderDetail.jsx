@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { ArrowLeft, CheckCircle, Truck, XCircle, Calendar, User } from 'lucide-react'
-import api from '../../client'
+import api from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
 
 const statusBadge = (s) => ({

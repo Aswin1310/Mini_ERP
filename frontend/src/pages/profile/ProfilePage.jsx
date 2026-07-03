@@ -7,7 +7,7 @@ import {
   Building2, ClipboardList, CheckCircle, Edit3, X, Info,
   KeyRound, BadgeCheck, Calendar, Activity
 } from 'lucide-react'
-import api from '../../client'
+import api from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
 
 const ROLE_META = {

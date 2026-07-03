@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { Plus, Eye, CheckCircle, XCircle, X, Trash2, Truck, ShoppingBag, Calendar, Filter } from 'lucide-react'
-import api from '../../client'
+import api from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
 import Pagination, { PAGE_SIZE } from '../../components/Pagination'
 

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { Plus, Eye, CheckCircle, Play, XCircle, BookOpen, X, Factory, Filter } from 'lucide-react'
 import Pagination, { PAGE_SIZE } from '../../components/Pagination'
-import api from '../../client'
+import api from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
 
 const fmtDate = d => d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'

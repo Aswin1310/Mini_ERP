@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { UserCog, Shield, CheckCircle, XCircle, RefreshCw } from 'lucide-react'
-import api from '../../client'
+import api from '../../api/client'
 
 const ROLES = ['sales', 'purchase', 'manufacturing', 'inventory', 'owner', 'admin']
 
