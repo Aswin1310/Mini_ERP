@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { ArrowLeft, CheckCircle, Play, Hammer, XCircle, PlayCircle, StopCircle, Clipboard, Package, Settings } from 'lucide-react'
-import api from '../../api/client'
+import api from '../../client'
 import { useAuth } from '../../context/AuthContext'
 
 const statusBadge = (s) => ({
@@ -42,38 +42,38 @@ export default function MODetail() {
 
   const { data: mo, isLoading } = useQuery({
     queryKey: ['manufacturing', id],
-    queryFn: () => api.get(`/api/manufacturing/orders/${id}`).then(r => r.data)
+    queryFn: () => api.get(`/manufacturing/orders/${id}`).then(r => r.data)
   })
 
   const confirmMut = useMutation({
-    mutationFn: () => api.post(`/api/manufacturing/orders/${id}/confirm`),
+    mutationFn: () => api.post(`/manufacturing/orders/${id}/confirm`),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['manufacturing'] }); toast.success('MO confirmed successfully') },
     onError: e => toast.error(e.response?.data?.detail || 'Error'),
   })
   const startMut = useMutation({
-    mutationFn: () => api.post(`/api/manufacturing/orders/${id}/start`),
+    mutationFn: () => api.post(`/manufacturing/orders/${id}/start`),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['manufacturing'] }); toast.success('Production started') },
     onError: e => toast.error(e.response?.data?.detail || 'Error'),
   })
   const produceMut = useMutation({
-    mutationFn: () => api.post(`/api/manufacturing/orders/${id}/produce`),
+    mutationFn: () => api.post(`/manufacturing/orders/${id}/produce`),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['manufacturing'] }); toast.success('Production completed! Inventory updated.') },
     onError: e => toast.error(e.response?.data?.detail || 'Error'),
   })
   const cancelMut = useMutation({
-    mutationFn: () => api.post(`/api/manufacturing/orders/${id}/cancel`),
+    mutationFn: () => api.post(`/manufacturing/orders/${id}/cancel`),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['manufacturing'] }); toast.success('MO cancelled') },
     onError: e => toast.error(e.response?.data?.detail || 'Error'),
   })
 
   const woStartMut = useMutation({
-    mutationFn: (wo_id) => api.post(`/api/manufacturing/orders/${id}/work-orders/${wo_id}/start`),
+    mutationFn: (wo_id) => api.post(`/manufacturing/orders/${id}/work-orders/${wo_id}/start`),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['manufacturing'] }); toast.success('Work order started') },
     onError: e => toast.error(e.response?.data?.detail || 'Error'),
   })
 
   const woDoneMut = useMutation({
-    mutationFn: (wo_id) => api.post(`/api/manufacturing/orders/${id}/work-orders/${wo_id}/done`),
+    mutationFn: (wo_id) => api.post(`/manufacturing/orders/${id}/work-orders/${wo_id}/done`),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['manufacturing'] }); toast.success('Work order marked done') },
     onError: e => toast.error(e.response?.data?.detail || 'Error'),
   })

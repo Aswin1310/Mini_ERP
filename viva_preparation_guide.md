@@ -85,7 +85,7 @@ These handle request routing, parameters extraction, database session management
 ### 📂 Routing & Contexts
 *   [App.jsx](file:///d:/Odoo_Hackathon_KAHE/frontend/src/App.jsx): Main router structure. Uses React Router 6. Defines which endpoints load which pages. Wraps secure screens in `PrivateRoute` blocks to block unauthorized guests.
 *   [AuthContext.jsx](file:///d:/Odoo_Hackathon_KAHE/frontend/src/context/AuthContext.jsx): Global React state provider that tracks the active logged-in user, credentials, role, and handles `login` / `logout` actions. Saves session tokens in `localStorage`.
-*   [client.js](file:///d:/Odoo_Hackathon_KAHE/frontend/src/api/client.js): Configures Axios with a base backend URL. Automatically attaches the JWT authorization bearer token to every outgoing API request.
+*   [client.js](file:///d:/Odoo_Hackathon_KAHE/frontend/src/client.js): Configures Axios with a base backend URL. Automatically attaches the JWT authorization bearer token to every outgoing API request.
 *   [Layout.jsx](file:///d:/Odoo_Hackathon_KAHE/frontend/src/components/Layout.jsx): The master page shell. Renders the interactive dark-navy sidebar, breadcrumbs title bar, mobile sidebar triggers, and user profile badges.
 
 ### 📂 Interface Pages (`frontend/src/pages/`)

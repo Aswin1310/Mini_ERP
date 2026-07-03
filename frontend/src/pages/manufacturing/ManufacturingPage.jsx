@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { Plus, Eye, CheckCircle, Play, XCircle, BookOpen, X, Factory, Filter } from 'lucide-react'
 import Pagination, { PAGE_SIZE } from '../../components/Pagination'
-import api from '../../api/client'
+import api from '../../client'
 import { useAuth } from '../../context/AuthContext'
 
 const fmtDate = d => d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'
@@ -17,16 +17,16 @@ const statusBadge = (s) => ({
 
 function NewMOForm({ onClose }) {
   const qc = useQueryClient()
-  const { data: products } = useQuery({ queryKey: ['products'], queryFn: () => api.get('/api/products').then(r => r.data) })
-  const { data: boms } = useQuery({ queryKey: ['boms'], queryFn: () => api.get('/api/manufacturing/boms').then(r => r.data) })
-  const { data: users } = useQuery({ queryKey: ['users'], queryFn: () => api.get('/api/auth/users').then(r => r.data) })
+  const { data: products } = useQuery({ queryKey: ['products'], queryFn: () => api.get('/products').then(r => r.data) })
+  const { data: boms } = useQuery({ queryKey: ['boms'], queryFn: () => api.get('/manufacturing/boms').then(r => r.data) })
+  const { data: users } = useQuery({ queryKey: ['users'], queryFn: () => api.get('/auth/users').then(r => r.data) })
   const [form, setForm] = useState({ product_id: '', bom_id: '', qty_planned: 1, scheduled_date: new Date().toISOString().split('T')[0], assignee_id: '' })
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
   const filteredBoms = boms?.filter(b => !form.product_id || b.product_id === form.product_id)
 
   const mut = useMutation({
-    mutationFn: d => api.post('/api/manufacturing/orders', d),
+    mutationFn: d => api.post('/manufacturing/orders', d),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['manufacturing'] }); onClose(); toast.success('Manufacturing order created') },
     onError: e => toast.error(e.response?.data?.detail || 'Failed to create MO'),
   })
@@ -136,25 +136,25 @@ export default function ManufacturingPage() {
 
   const { data: orders, isLoading } = useQuery({
     queryKey: ['manufacturing', statusFilter, page],
-    queryFn: () => api.get('/api/manufacturing/orders', {
+    queryFn: () => api.get('/manufacturing/orders', {
       params: { skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE, ...(statusFilter ? { status: statusFilter } : {}) }
     }).then(r => r.data),
   })
 
   const confirmMut = useMutation({ 
-    mutationFn: id => api.post(`/api/manufacturing/orders/${id}/confirm`), 
+    mutationFn: id => api.post(`/manufacturing/orders/${id}/confirm`), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['manufacturing'] }); toast.success('MO confirmed successfully') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to confirm order') 
   })
   
   const startMut = useMutation({ 
-    mutationFn: id => api.post(`/api/manufacturing/orders/${id}/start`), 
+    mutationFn: id => api.post(`/manufacturing/orders/${id}/start`), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['manufacturing'] }); toast.success('MO execution started') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to start execution') 
   })
   
   const cancelMut = useMutation({ 
-    mutationFn: id => api.post(`/api/manufacturing/orders/${id}/cancel`), 
+    mutationFn: id => api.post(`/manufacturing/orders/${id}/cancel`), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['manufacturing'] }); toast.success('MO cancelled') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to cancel order') 
   })

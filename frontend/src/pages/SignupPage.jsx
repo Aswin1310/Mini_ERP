@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import api from '../api/client'
+import api from '../client'
 import toast from 'react-hot-toast'
 import FurnitureScene from '../components/FurnitureScene'
 import { Factory, User, Mail, Lock, Briefcase, Eye, EyeOff, ArrowRight, Sparkles, ShieldCheck } from 'lucide-react'
@@ -45,7 +45,7 @@ export default function SignupPage() {
     if (form.password.length < 6) { toast.error('Password must be at least 6 characters'); return }
     setLoading(true)
     try {
-      await api.post('/api/auth/register', {
+      await api.post('/auth/register', {
         full_name: form.full_name, email: form.email, password: form.password, role: form.role,
         ...(form.role === 'admin' && { admin_secret: form.admin_secret }),
       })

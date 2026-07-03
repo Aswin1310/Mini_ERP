@@ -5,7 +5,7 @@ import {
   TrendingUp, AlertTriangle, Clock, ArrowRight,
   Package, Zap, Building2, Users, ClipboardList,
 } from 'lucide-react'
-import api from '../api/client'
+import api from '../client'
 import { useAuth } from '../context/AuthContext'
 
 const STATUS_COLORS = {
@@ -199,7 +199,7 @@ export default function Dashboard() {
   const { user } = useAuth()
   const { data, isLoading } = useQuery({
     queryKey: ['dashboard'],
-    queryFn: () => api.get('/api/dashboard').then(r => r.data),
+    queryFn: () => api.get('/dashboard').then(r => r.data),
   })
 
   const now = new Date()

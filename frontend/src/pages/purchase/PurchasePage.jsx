@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { Plus, Eye, CheckCircle, XCircle, X, Trash2, Truck, ShoppingBag, Calendar, Filter } from 'lucide-react'
-import api from '../../api/client'
+import api from '../../client'
 import { useAuth } from '../../context/AuthContext'
 import Pagination, { PAGE_SIZE } from '../../components/Pagination'
 
@@ -20,8 +20,8 @@ const statusBadge = (s) => ({
 
 function NewPOForm({ onClose }) {
   const qc = useQueryClient()
-  const { data: vendors } = useQuery({ queryKey: ['vendors'], queryFn: () => api.get('/api/vendors').then(r => r.data) })
-  const { data: products } = useQuery({ queryKey: ['products'], queryFn: () => api.get('/api/products').then(r => r.data) })
+  const { data: vendors } = useQuery({ queryKey: ['vendors'], queryFn: () => api.get('/vendors').then(r => r.data) })
+  const { data: products } = useQuery({ queryKey: ['products'], queryFn: () => api.get('/products').then(r => r.data) })
   const [form, setForm] = useState({ vendor_id: '', order_date: new Date().toISOString().split('T')[0], notes: '' })
   const [lines, setLines] = useState([{ product_id: '', qty_ordered: 1, unit_price: '' }])
 
@@ -35,7 +35,7 @@ function NewPOForm({ onClose }) {
   }
 
   const mut = useMutation({
-    mutationFn: d => api.post('/api/purchase', d),
+    mutationFn: d => api.post('/purchase', d),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['purchase'] }); onClose(); toast.success('Purchase order created successfully') },
     onError: e => toast.error(e.response?.data?.detail || 'Failed to create purchase order'),
   })
@@ -186,18 +186,18 @@ export default function PurchasePage() {
       if (filters.status) params.status = filters.status
       if (filters.date_from) params.date_from = filters.date_from
       if (filters.date_to) params.date_to = filters.date_to
-      return api.get('/api/purchase', { params }).then(r => r.data)
+      return api.get('/purchase', { params }).then(r => r.data)
     },
   })
 
   const confirmMut = useMutation({ 
-    mutationFn: id => api.post(`/api/purchase/${id}/confirm`), 
+    mutationFn: id => api.post(`/purchase/${id}/confirm`), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['purchase'] }); toast.success('Purchase order confirmed') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to confirm order') 
   })
   
   const cancelMut = useMutation({ 
-    mutationFn: id => api.post(`/api/purchase/${id}/cancel`), 
+    mutationFn: id => api.post(`/purchase/${id}/cancel`), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['purchase'] }); toast.success('Purchase order cancelled') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to cancel order') 
   })

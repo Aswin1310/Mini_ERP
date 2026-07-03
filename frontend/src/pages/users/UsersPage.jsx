@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { UserCog, Shield, CheckCircle, XCircle, RefreshCw } from 'lucide-react'
-import api from '../../api/client'
+import api from '../../client'
 
 const ROLES = ['sales', 'purchase', 'manufacturing', 'inventory', 'owner', 'admin']
 
@@ -22,11 +22,11 @@ export default function UsersPage() {
 
   const { data: users, isLoading } = useQuery({
     queryKey: ['users'],
-    queryFn: () => api.get('/api/auth/users').then(r => r.data),
+    queryFn: () => api.get('/auth/users').then(r => r.data),
   })
 
   const updateMut = useMutation({
-    mutationFn: ({ id, payload }) => api.patch(`/api/auth/users/${id}`, payload),
+    mutationFn: ({ id, payload }) => api.patch(`/auth/users/${id}`, payload),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['users'] })
       setEditingId(null)

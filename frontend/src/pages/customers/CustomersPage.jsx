@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { Plus, Edit2, X, Users, Mail, Phone, MapPin, Search } from 'lucide-react'
-import api from '../../api/client'
+import api from '../../client'
 import { useAuth } from '../../context/AuthContext'
 import Pagination, { PAGE_SIZE } from '../../components/Pagination'
 
@@ -94,19 +94,19 @@ export default function CustomersPage() {
 
   const { data: customers, isLoading } = useQuery({
     queryKey: ['customers', search, page],
-    queryFn: () => api.get('/api/customers', {
+    queryFn: () => api.get('/customers', {
       params: { skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE, ...(search ? { search } : {}) }
     }).then(r => r.data),
   })
 
   const createMut = useMutation({ 
-    mutationFn: d => api.post('/api/customers', d), 
+    mutationFn: d => api.post('/customers', d), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['customers'] }); setShowForm(false); toast.success('Customer registered successfully') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to register customer') 
   })
 
   const updateMut = useMutation({ 
-    mutationFn: ({ id, data }) => api.put(`/api/customers/${id}`, data), 
+    mutationFn: ({ id, data }) => api.put(`/customers/${id}`, data), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['customers'] }); setEditing(null); toast.success('Customer profile updated') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to update customer') 
   })

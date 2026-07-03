@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { Plus, Edit2, TrendingUp, X, Package, Search, FlaskConical, RefreshCw, IndianRupee } from 'lucide-react'
-import api from '../../api/client'
+import api from '../../client'
 import { useAuth } from '../../context/AuthContext'
 import Pagination, { PAGE_SIZE } from '../../components/Pagination'
 
@@ -37,7 +37,7 @@ function PricingModal({ product, onClose }) {
     : 0
 
   const pricingMut = useMutation({
-    mutationFn: () => api.patch(`/api/products/${product.id}/pricing`, {
+    mutationFn: () => api.patch(`/products/${product.id}/pricing`, {
       cost_price: parseFloat(form.cost_price),
       sales_price: parseFloat(form.sales_price),
       tax_percent: parseFloat(form.tax_percent),
@@ -142,7 +142,7 @@ function ProductForm({ initial, onSave, onCancel }) {
     reorder_point: '0', reorder_qty: '0', vendor_id: '',
   })
 
-  const { data: vendors } = useQuery({ queryKey: ['vendors'], queryFn: () => api.get('/api/vendors').then(r => r.data) })
+  const { data: vendors } = useQuery({ queryKey: ['vendors'], queryFn: () => api.get('/vendors').then(r => r.data) })
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
   const liveIncl = inclTax(form.sales_price, form.tax_percent)
@@ -322,7 +322,7 @@ const EmptyState = ({ onAction, canEdit }) => (
 function RawMaterialsModal({ product, onClose }) {
   const { data: boms, isLoading } = useQuery({
     queryKey: ['boms', product.id],
-    queryFn: () => api.get('/api/manufacturing/boms', { params: { product_id: product.id } }).then(r => r.data),
+    queryFn: () => api.get('/manufacturing/boms', { params: { product_id: product.id } }).then(r => r.data),
   })
 
   const activeBom = boms?.find(b => b.is_active === 'Y') || boms?.[0]
@@ -415,32 +415,32 @@ export default function ProductsPage() {
       if (filters.search) params.search = filters.search
       if (filters.category) params.category = filters.category
       if (filters.low_stock) params.low_stock = true
-      return api.get('/api/products', { params }).then(r => r.data)
+      return api.get('/products', { params }).then(r => r.data)
     },
   })
 
   const hasFilters = filters.search || filters.category || filters.low_stock
 
   const createMut = useMutation({
-    mutationFn: (data) => api.post('/api/products', data),
+    mutationFn: (data) => api.post('/products', data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['products'] }); setShowForm(false); toast.success('Product created successfully') },
     onError: (e) => toast.error(e.response?.data?.detail || 'Failed to create product'),
   })
 
   const updateMut = useMutation({
-    mutationFn: ({ id, data }) => api.put(`/api/products/${id}`, data),
+    mutationFn: ({ id, data }) => api.put(`/products/${id}`, data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['products'] }); setEditing(null); toast.success('Product updated successfully') },
     onError: (e) => toast.error(e.response?.data?.detail || 'Failed to update product'),
   })
 
   const adjustMut = useMutation({
-    mutationFn: ({ id, qty }) => api.post(`/api/products/${id}/adjust-stock`, { qty: parseFloat(qty) }),
+    mutationFn: ({ id, qty }) => api.post(`/products/${id}/adjust-stock`, { qty: parseFloat(qty) }),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['products'] }); setAdjusting(null); setAdjustQty(''); toast.success('Stock level adjusted') },
     onError: (e) => toast.error(e.response?.data?.detail || 'Failed to adjust stock'),
   })
 
   const reorderMut = useMutation({
-    mutationFn: () => api.post('/api/procurement/run-reorder'),
+    mutationFn: () => api.post('/procurement/run-reorder'),
     onSuccess: (res) => {
       qc.invalidateQueries({ queryKey: ['products'] })
       const d = res.data

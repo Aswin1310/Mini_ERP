@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { ArrowLeft, CheckCircle, Truck, XCircle, Calendar, User } from 'lucide-react'
-import api from '../../api/client'
+import api from '../../client'
 import { useAuth } from '../../context/AuthContext'
 
 const statusBadge = (s) => ({
@@ -40,23 +40,23 @@ export default function SalesOrderDetail() {
 
   const { data: order, isLoading } = useQuery({ 
     queryKey: ['sales', id], 
-    queryFn: () => api.get(`/api/sales/${id}`).then(r => r.data) 
+    queryFn: () => api.get(`/sales/${id}`).then(r => r.data) 
   })
 
   const confirmMut = useMutation({ 
-    mutationFn: () => api.post(`/api/sales/${id}/confirm`), 
+    mutationFn: () => api.post(`/sales/${id}/confirm`), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['sales'] }); toast.success('Order confirmed successfully') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to confirm order') 
   })
   
   const cancelMut = useMutation({ 
-    mutationFn: () => api.post(`/api/sales/${id}/cancel`), 
+    mutationFn: () => api.post(`/sales/${id}/cancel`), 
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['sales'] }); toast.success('Order cancelled') }, 
     onError: e => toast.error(e.response?.data?.detail || 'Failed to cancel order') 
   })
   
   const deliverMut = useMutation({
-    mutationFn: () => api.post(`/api/sales/${id}/deliver`, {
+    mutationFn: () => api.post(`/sales/${id}/deliver`, {
       lines: Object.entries(deliveries).filter(([, qty]) => parseFloat(qty) > 0).map(([line_id, qty]) => ({ line_id, qty: parseFloat(qty) }))
     }),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['sales'] }); setDeliveries({}); toast.success('Delivery recorded successfully') },

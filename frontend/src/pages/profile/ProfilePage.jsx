@@ -7,7 +7,7 @@ import {
   Building2, ClipboardList, CheckCircle, Edit3, X, Info,
   KeyRound, BadgeCheck, Calendar, Activity
 } from 'lucide-react'
-import api from '../../api/client'
+import api from '../../client'
 import { useAuth } from '../../context/AuthContext'
 
 const ROLE_META = {
@@ -133,7 +133,7 @@ export default function ProfilePage() {
 
   const { data: profile, isLoading } = useQuery({
     queryKey: ['profile'],
-    queryFn: () => api.get('/api/auth/me').then(r => r.data),
+    queryFn: () => api.get('/auth/me').then(r => r.data),
   })
 
   useEffect(() => {
@@ -141,7 +141,7 @@ export default function ProfilePage() {
   }, [profile])
 
   const updateMut = useMutation({
-    mutationFn: d => api.patch('/api/auth/me', d),
+    mutationFn: d => api.patch('/auth/me', d),
     onSuccess: async () => {
       await refreshUser()
       qc.invalidateQueries({ queryKey: ['profile'] })
@@ -152,7 +152,7 @@ export default function ProfilePage() {
   })
 
   const pwdMut = useMutation({
-    mutationFn: d => api.post('/api/auth/change-password', d),
+    mutationFn: d => api.post('/auth/change-password', d),
     onSuccess: () => {
       setPwdForm({ current_password: '', new_password: '', confirm: '' })
       setShowPwdSection(false)
