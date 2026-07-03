@@ -15,7 +15,7 @@ from app.models.manufacturing import ManufacturingOrder, MOStatus
 from app.models.user import User
 from app.core.deps import get_current_user
 
-router = APIRouter(prefix="/api/dashboard", tags=["Dashboard"])
+router = APIRouter(prefix="/dashboard")
 
 
 class RecentSO(BaseModel):

@@ -12,7 +12,7 @@ from app.models.audit import AuditLog
 from app.models.user import User
 from app.core.deps import require_admin
 
-router = APIRouter(prefix="/api/audit", tags=["Audit"])
+router = APIRouter(prefix="/audit")
 
 
 class AuditLogOut(BaseModel):

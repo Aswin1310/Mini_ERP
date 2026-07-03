@@ -24,7 +24,7 @@ from app.services.stock import record_movement, reserve_stock, release_reservati
 from app.services.audit import log_action
 from app.services.sequence import next_mo_name
 
-router = APIRouter(prefix="/api/manufacturing", tags=["Manufacturing"])
+router = APIRouter(prefix="/manufacturing")
 _write = require_roles(UserRole.manufacturing, UserRole.owner, UserRole.admin)
 
 # ── Work Centers ──────────────────────────────────────────────────────────────

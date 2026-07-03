@@ -17,7 +17,7 @@ from app.services.audit import log_action
 from app.services.sequence import next_so_name
 from app.services.procurement import trigger_procurement
 
-router = APIRouter(prefix="/api/sales", tags=["Sales"])
+router = APIRouter(prefix="/sales")
 _write = require_roles(UserRole.sales, UserRole.owner, UserRole.admin)
 
 

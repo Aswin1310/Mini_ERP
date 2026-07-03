@@ -26,16 +26,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth.router, prefix="/api")
-app.include_router(products.router, prefix="/api")
-app.include_router(vendors.router, prefix="/api")
-app.include_router(customers.router, prefix="/api")
-app.include_router(sales.router, prefix="/api")
-app.include_router(purchase.router, prefix="/api")
-app.include_router(manufacturing.router, prefix="/api")
-app.include_router(audit.router, prefix="/api")
-app.include_router(dashboard.router, prefix="/api")
-app.include_router(procurement.router, prefix="/api")
+app.include_router(auth.router)
+app.include_router(products.router)
+app.include_router(vendors.router)
+app.include_router(customers.router)
+app.include_router(sales.router)
+app.include_router(purchase.router)
+app.include_router(manufacturing.router)
+app.include_router(audit.router)
+app.include_router(dashboard.router)
+app.include_router(procurement.router)
 
 
 @app.get("/docs", include_in_schema=False)

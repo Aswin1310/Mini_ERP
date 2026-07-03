@@ -11,7 +11,7 @@ from app.core.deps import get_current_user, require_admin
 from app.services.audit import log_action
 from app.config import settings
 
-router = APIRouter(prefix="/api/auth", tags=["Auth"])
+router = APIRouter(prefix="/auth")
 
 
 @router.post("/register", response_model=UserOut, status_code=201)

@@ -16,7 +16,7 @@ from app.core.deps import get_current_user, require_roles
 from app.services.stock import record_movement
 from app.services.audit import log_action
 
-router = APIRouter(prefix="/api/products", tags=["Products"])
+router = APIRouter(prefix="/products")
 
 _write_roles = require_roles(UserRole.owner, UserRole.inventory, UserRole.admin)
 

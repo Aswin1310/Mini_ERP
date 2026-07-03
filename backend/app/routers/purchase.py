@@ -16,7 +16,7 @@ from app.services.stock import record_movement
 from app.services.audit import log_action
 from app.services.sequence import next_po_name
 
-router = APIRouter(prefix="/api/purchase", tags=["Purchase"])
+router = APIRouter(prefix="/purchase")
 _write = require_roles(UserRole.purchase, UserRole.owner, UserRole.admin)
 
 

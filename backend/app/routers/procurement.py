@@ -6,7 +6,7 @@ from app.models.user import User, UserRole
 from app.core.deps import require_roles
 from app.services.procurement import check_reorder_points
 
-router = APIRouter(prefix="/api/procurement", tags=["Procurement"])
+router = APIRouter(prefix="/procurement")
 _write = require_roles(UserRole.admin, UserRole.owner, UserRole.purchase)
 
 
