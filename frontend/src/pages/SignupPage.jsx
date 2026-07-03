@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import api from '../client'
+import api from '../api/client'
 import toast from 'react-hot-toast'
 import FurnitureScene from '../components/FurnitureScene'
 import { Factory, User, Mail, Lock, Briefcase, Eye, EyeOff, ArrowRight, Sparkles, ShieldCheck } from 'lucide-react'
