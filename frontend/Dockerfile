@@ -1,20 +1,24 @@
-# Use the official Node.js image
-FROM node:22
+# ---------- Build Stage ----------
+FROM node:22 AS builder
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy the remaining project files
 COPY . .
 
-# Expose Vite's default port
+RUN npm run build
+
+# ---------- Production Stage ----------
+FROM node:22
+
+WORKDIR /app
+
+RUN npm install -g serve
+
+COPY --from=builder /app/dist ./dist
+
 EXPOSE 5173
 
-# Start the Vite development server
-CMD ["npm", "run", "dev", "--", "--host"]
+CMD ["serve", "-s", "dist", "-l", "5173"]
