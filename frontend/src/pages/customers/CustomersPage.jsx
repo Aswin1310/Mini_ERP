@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { Plus, Edit2, X, Users, Mail, Phone, MapPin, Search } from 'lucide-react'
-import api from '../../client'
+import api from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
 import Pagination, { PAGE_SIZE } from '../../components/Pagination'
 

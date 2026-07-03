@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { Plus, ArrowLeft, Trash2, X, BookOpen, Factory } from 'lucide-react'
-import api from '../../client'
+import api from '../../api/client'
 import { useAuth } from '../../context/AuthContext'
 
 function WorkCenterPanel({ canEdit }) {

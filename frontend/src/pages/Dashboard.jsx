@@ -5,7 +5,7 @@ import {
   TrendingUp, AlertTriangle, Clock, ArrowRight,
   Package, Zap, Building2, Users, ClipboardList,
 } from 'lucide-react'
-import api from '../client'
+import api from '../api/client'
 import { useAuth } from '../context/AuthContext'
 
 const STATUS_COLORS = {
